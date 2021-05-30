@@ -33,12 +33,21 @@ class SecondFragment : Fragment() {
 
         backButton?.setOnClickListener {
             // TODO: implement back
+            moveBack()
+        }
+    }
+
+    fun moveBack() {
+        if (activity is FragmentNavigator) {
+            val bundle = Bundle()
+            bundle.putInt(PREVIOUS_RESULT_KEY, result?.text.toString().toInt())
+            (activity as FragmentNavigator).moveBack(bundle)
         }
     }
 
     private fun generate(min: Int, max: Int): Int {
         // TODO: generate random number
-        return 0
+        return (min..max).random()
     }
 
     companion object {
@@ -49,11 +58,16 @@ class SecondFragment : Fragment() {
             val args = Bundle()
 
             // TODO: implement adding arguments
-
+            args.putInt(MAX_VALUE_KEY, max)
+            args.putInt(MIN_VALUE_KEY, min)
+            fragment.arguments = args
             return fragment
         }
 
         private const val MIN_VALUE_KEY = "MIN_VALUE"
         private const val MAX_VALUE_KEY = "MAX_VALUE"
+        @JvmField val PREVIOUS_RESULT_KEY = this::class.java.name + ".PREVIOUS_RESULT"
+
+        @JvmField val TAG = this::class.java.name + ".TAG"
     }
 }
